@@ -55,18 +55,21 @@ def index(request):
             os.mkdir(upload_file_path)
         ecg_img_filepath = str
         if file_type == 'jpg':
-            ecg_img_filename = 'ecg' + str(time.time()) + '.jpg'
+            # ecg_img_filename = 'ecg' + str(time.time()) + '.jpg'
+            ecg_img_filename = 'ecg.jpg'
             ecg_img_filepath = ecg_img_path+ecg_img_filename
             with open(ecg_img_filepath, 'wb+') as f:
                 for chunk in file.chunks():
                     f.write(chunk)
         elif file_type == 'pdf':
-            pdf_filename = 'pdf' + str(time.time()) + '.pdf'
+            # pdf_filename = 'pdf' + str(time.time()) + '.pdf'
+            pdf_filename = 'pdf.pdf'
             pdf_filepath = upload_file_path + pdf_filename
             with open(upload_file_path + pdf_filename, 'wb+') as f:
                 for chunk in file.chunks():
                     f.write(chunk)
-            ecg_img_filename = 'ecg' + str(time.time()) + '.jpg'
+            # ecg_img_filename = 'ecg' + str(time.time()) + '.jpg'
+            ecg_img_filename = 'ecg.jpg'
             ecg_img_filepath = ecg_img_path + ecg_img_filename
             PdfToJpg(pdf_filepath, ecg_img_filepath)
         color_image = openImage(Path(ecg_img_filepath))
@@ -94,7 +97,7 @@ def index(request):
             }
             res['data'].append(one_data)
         for i in preview.keys():
-            filename = "./{}.jpg".format(i)
+            filename = "ecg_images/{}.jpg".format(i)
             cv2.imwrite(filename, preview[i].data)
         jsonpak = json.dumps(res, cls=NumpyEncoder)
         return HttpResponse(jsonpak)
@@ -105,7 +108,7 @@ def PreViewImage(request):
         data = request.GET
         if int(data['label']) >= 0:
             label = int(data['label'])
-            filename = "./{}.jpg".format(LeadId[names[label]])
+            filename = "ecg_images/{}.jpg".format(LeadId[names[label]])
             print(filename)
             return HttpResponse(open(filename, 'rb').read(), content_type='image/jpg')
         else:
@@ -170,7 +173,8 @@ def newDataUpload(request):
             os.mkdir(upload_file_path)
         ecg_img_filepath = str
         if file_type == 'jpg':
-            ecg_img_filename = 'ecg' + str(time.time()) + '.jpg'
+            # ecg_img_filename = 'ecg' + str(time.time()) + '.jpg'
+            ecg_img_filename = 'ecg.jpg'
             ecg_img_filepath = ecg_img_path + ecg_img_filename
             with open(ecg_img_filepath, 'wb+') as f:
                 for chunk in file.chunks():
@@ -191,7 +195,7 @@ def newDataUpload(request):
         data_array = [float(i) for i in data_array.split(',')]
         data_array = np.array(data_array)
         new_preview = visualization.overlaySignalOnImage(data_array, to_preview_image)
-        filename = "./LeadId.{}.jpg".format(names[this_label])
+        filename = "ecg_images/LeadId.{}.jpg".format(names[this_label])
         cv2.imwrite(filename, new_preview.data)
 
         spaceing = ecgdigitize.digitizeGrid(to_preview_image)
