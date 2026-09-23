@@ -1,7 +1,8 @@
 # ECG Digitization Project
 
 ## Update conclusion
-v1.0 Basic function of ECG Digitization.
+v1.0 Basic ECG digitization
+A lightweight tool for converting scanned or photographed ECG images into digital waveform signals for downstream signal processing and analysis.
 
 ## Set up environment
 ### Backend
